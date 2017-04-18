@@ -17,10 +17,8 @@ After installing, you can develop in the command line (iPython console) or devel
 ##### Documentation
 Please, GET INTO THE HABIT OF COMMENTING and using TODOS or FIXMES. This will help GREATLY (not just me, but also yourself!).
 Use the following design for your documentation in Python:
-  - # to comment this single line
-  - """
-       To comment out a block of code
-    """
+  - type '#' to comment a single line
+  - type '"""' around a block of code to comment it out
 At the top of every file, please note that you have modified the file with the date and your name in this design:
   - """
        <other comments here...>
