@@ -62,12 +62,12 @@ Create a branch FROM this repository. You will name it <your_first_name> or <you
 #### Committing and Pushing
 Please get into the habit of doing this after every day of your work to not only track your progress, but also have a backup baseline for you to refer. <br />
 NEVER MERGE - this will be my job to handle merges and their conflicts (if any). The only commands you need to worry about for your development are:
-  - git status
+  - git status <br />
     This will tell you which files you have modified that ARE NOT already committed to the repository. Do this before 'git add .' to be sure of everything.
-  - git add .
+  - git add . <br />
     This will add all your edited files to be ready for pushing to the git repository. Do this before 'git commit -m "..."'.
-  - git commit -m "<useful message here>"
+  - git commit -m "useful message here" <br />
     This will collect all your modifications to be added to your branch on the git repository. Make sure of this by reading the next line after hitting ENTER, it should say something like "on git branch origin/<your_name>" or so. Do this before 'git push'.
-  - git push
+  - git push <br />
     This will collect everything to be added to the git repository on your branch only. Do this last. You have submitted your work to your branch for me to check out.
 If you need anything else, ASK ME. I am here to help with this assignment!
