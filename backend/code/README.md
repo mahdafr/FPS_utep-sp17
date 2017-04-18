@@ -6,7 +6,7 @@ UTEP CS4311 Spring 2017 capstone: FPS
 ## Organization and Delegation
 Each directory is the directory on which you will be working, i.e., they are labeled by YOUR NAME. Please DO NOT work on another directory within your branch (see below).
 
-## Instructions for Development
+## Preparation and Design for Development
 ### 1. Installation
 Download Anaconda for your machine to install the package for Python development. Choose the Python 3.6 Download for your machine:
   - https://www.continuum.io/downloads
@@ -33,6 +33,8 @@ For me on this file (if it had been written in a Python file), this would look l
     """
 ##### Keep Working
 It's almost over guys, let's end strong by getting this project done for the team!
+
+## Development Instructions and Guidelines
 ### What to Submit
 In every commit, submit all of your work, including your tests (this could be in a .txt document or even a Python unit test file). I need to know how you tested your work.
 ### Deadlines (by midnight)
@@ -50,9 +52,9 @@ By this day, clone and create your branches in your system. Message me directly 
 ### Git Help
 #### Cloning
 You should have already received a link to add this repository to your Git account as a Collaborator (it's the only way you can see this page). Clone to your system by:
-  - navigating to the directory you want to develop within in your command line (for me, it is in the path: C:\Users\mmafr\Documents\Skool\)
+  - navigating to the directory you want to develop within in your command line (for me, I want it in the path: C:\Users\mmafr\Documents\Skool\)
   - typing in the command line: git clone https://github.com/mahdafr/legac_fps.git
-  - navigating next to this directory in the command line (for me, it is: C:\Users\mmafr\Documents\Skool\legac_fps)
+  - navigating next to the new directory in the command line (for me, it is: C:\Users\mmafr\Documents\Skool\legac_fps)
   - you should see everything in the origin branch now (everything that is on the website)
 #### Branches
 Create a branch FROM this repository. You will name it <your_first_name> or <your_utep_username> (e.g., Michelle creates a branch called michelle OR mafravi). Do this on the command line by:
