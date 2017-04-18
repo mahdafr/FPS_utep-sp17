@@ -17,22 +17,22 @@ After installing, you can develop in the command line (iPython console) or devel
 ##### Documentation
 Please, GET INTO THE HABIT OF COMMENTING and using TODOS or FIXMES. This will help GREATLY (not just me, but also yourself!).
 Use the following design for your documentation in Python:
-  # to comment this single line
-  """
-     To comment out a block of code
-  """
+  - # to comment this single line
+  - """
+       To comment out a block of code
+    """
 At the top of every file, please note that you have modified the file with the date and your name in this design:
-  """
-     <other comments here...>
-     @modified MM-DD Weekday by <your_name>
-	 <short description of what you modified>
-  """
-  For me on this file (if it had been written in a Python file), this would look like:
-  """
-     <other comments here...>
-	 @modified 04-18 T by mafravi
-	 Added delegations and schedules.
-  """
+  - """
+       <other comments here...>
+       @modified MM-DD Weekday by <your_name>
+	   <short description of what you modified>
+    """
+For me on this file (if it had been written in a Python file), this would look like:
+  - """
+       <other comments here...>
+	   @modified 04-18 T by mafravi
+	   Added delegations and schedules.
+    """
 ##### Keep Working
 It's almost over guys, let's end strong by getting this project done for the team!
 ##### What to Submit
