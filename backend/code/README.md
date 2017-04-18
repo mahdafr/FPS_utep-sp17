@@ -4,7 +4,15 @@ UTEP CS4311 Spring 2017 capstone: FPS
 @modified 04-18 T
 
 ## Organization and Delegation
-Each directory is the directory on which you will be working, i.e., they are labeled by YOUR NAME. Please DO NOT work on another directory within your branch (see below).
+Each directory is the directory on which you will be working, i.e., they are labeled by YOUR NAME. Please DO NOT work on another directory within your branch (see below). <br />
+You can find your delegations in the delegation.pdf files of your respective directory. <br />
+The delegations (by classes) are as follows: <br />
+  - Eric: Filter, Protocol, tShark
+  - Ivonne: Field, Formatter, Script
+  - Jerry: File, HistoricalCopy, ProtocolIdentifier
+  - Juan: AnnotationAction, Expression, Packet
+  - Mahdokht: Action, GUI, PDML, ProtoElement
+  - Unsigned (division TBD): Rule, Hook
 
 ## Preparation and Design for Development
 ### 1. Installation
@@ -42,7 +50,7 @@ Please adhere to these deadlines to allow time for me to merge everything togeth
 #### 05/03 Wednesday
 Integration. Delegations of work TBD through our weekly meetings.
 #### 04/28 Friday
-By this day, all of your classes fully implemented and tested. Message me which ones you have submitted to your branch so that I may check.
+By this day, have all of your classes fully implemented and tested. Message me which ones you have submitted to your branch so that I may check.
 #### 04/24 Monday
 By this day, have at least two (2) classes fully implemented and tested. Message me which ones you have submitted to your branch so that I may check.
 #### 04/21 Friday
