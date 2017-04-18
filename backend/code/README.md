@@ -69,7 +69,7 @@ NEVER MERGE - this will be my job to handle merges and their conflicts (if any).
   - git add .
     This will add all your edited files to be ready for pushing to the git repository. Do this before 'git commit -m "..."'.
   - git commit -m "<useful message here>"
-    This will collect all your modifications to be added to your branch on the git repository. 
+    This will collect all your modifications to be added to your branch on the git repository. Make sure of this by reading the next line after hitting ENTER, it should say something like "on git branch origin/<your_name>" or so. Do this before 'git push'.
   - git push
-    This will collect everything to be added to the git repository on your branch only. Make sure of this by reading the next line after hitting ENTER, it should say something like "on git branch origin/<your_name>" or so. Do this last. You have submitted your work to your branch for me to check out.
+    This will collect everything to be added to the git repository on your branch only. Do this last. You have submitted your work to your branch for me to check out.
 If you need anything else, ASK ME. I am here to help with this assignment!
