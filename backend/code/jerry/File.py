@@ -29,4 +29,4 @@ def createHistoricalCopy(pdml):
 def createFile(file_name):
     """ Creates a new file instance """
     f= open(file_name,"w+")
-    f.close()   
+    f.close() 
