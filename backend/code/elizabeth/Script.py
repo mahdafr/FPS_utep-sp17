@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author Mahdokht Afravi
-@created 04-18 T
-"""
+@created 04-18""
 
 """ Contract 24: Manage Script """
 # @requires 
