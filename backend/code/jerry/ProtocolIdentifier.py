@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-@author Mahdokht Afravi
+@author Gerardo Fang
 @created 04-18 T
+@lastmod 04-21 F
 """
 
 """ Contract 20: Scan PDML """
