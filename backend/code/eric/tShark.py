@@ -5,6 +5,9 @@ import re
 import sys
 from pyshark.config import get_config
 
+# file from tShark
+convertedFile
+
 class TSharkNotFoundException(Exception):
     pass
 
@@ -20,23 +23,35 @@ def sendPCAP(pcap):
     # the file extension is pcap
     if pcap.lower().endswith('.pcap'):
     # command to parse pcap to pdml
-        command = "tshark –r" + pcap + " -T pdml"
+        command = "tshark -r" + pcap + " -T pdml"
+
         # input
         tsharkIn   = open(pcap, "rb")
         #output
-        tsharkOut  = open("tshark.txt", "wb")
+        tsharkOut  = open(name+".pdml", "wb")
 
-        tsharkProc = subprocess.Popen(command,
+        convertedFile = subprocess.Popen(command,
         stdin=tsharkIn,
         stdout=tsharkOut, 
         path = getTsharkPath())
-    
-        return tsharkProc
+        
+        # store returned file
+        storePDML(tSharkOut)
+        return convertedFile
         
 # @requires tShark parsed the PDML with no errors
 # @ensures a new file type of PDML is stored on the file system to be opened by PFS
 def storePDML(pdml):
-    print("")
+        with open(pdml.name, "wb") as out_file:
+            for i in range(len(pdml)):
+                out_string = ""
+                out_string += str(pdml[i])
+                out_string += "\n"
+                out_file.write(out_string)
+                # get file name without extension
+                base = os.path.basename(pdml)
+                name = os.path.splitext(base)
+        
 #""" Receives a parsed PDML file and stores it on the local file system """
 
 def check_output(*popenargs, **kwargs):
