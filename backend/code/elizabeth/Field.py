@@ -70,11 +70,6 @@ class Field:
             self.annotation = annotation
             self.hasAnnotation = True
 
-# I am not sure why we have this method 
-#    def updateField(toUpdate,field):
-
-# Method to remove hook/annotation
-
 # Testing
 field1 = Field("num", "", "")
 field2 = Field("len", "", "")

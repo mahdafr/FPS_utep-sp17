@@ -1,33 +1,31 @@
 # -*- coding: utf-8 -*-
 """
-@author Mahdokht Afravi
+@author Ivonne Lopez
 @created 04-18 T
 """
 
-""" Contract 10: Manage Formatter """
-# @requires the list of rules received is empty
-# @ensures 
-def createFormatter(rule):
-    """ Receives a list of rules to build a new formatter """
-	
+class Formatter:
 
-# @requires the list of rules received is not empty and the formatter exists
-# @ensures 
-def applyRules(formatter,rule):
-    """ Receives a formatter and applies the set of rules to the formatter """
-	
+    def __init__(self, rules, file):
+        self.rules = rules
+        self.file = file
+    
+#def applyRules(self, rules, file)
+
+    def addRule(self, rule):
+        self.rules.append(rule)
+
+    def deleteRule(self):
+        del self.rules[-1]
+
+    def printListOfRules(self) :
+        print(self.rules)
 
 
-""" Contract 11: Manage Rules """
-# @requires the rule is not empty and formatter exists
-# @ensures 
-def addRule(formatter,rule):
-    """ Receives a formatter and adds the rule to the formatter """
-	
-
-# @requires the rule is the last one added to the formatter
-# @ensures 
-def deleteRule(formatter,rule):
-    """ Receives a rule and deletes it from the formatter """
-	
+# Testing
+formatter1 = Formatter(["rule1", "rule2"], "cubic.pdml")
+formatter1.addRule("rule3")
+formatter1.printListOfRules()
+formatter1.deleteRule()
+formatter1.printListOfRules()
 
