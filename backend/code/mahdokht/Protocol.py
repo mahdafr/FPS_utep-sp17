@@ -3,8 +3,8 @@
 @author Mahdokht Afravi
 @created 04-18 T
 
-@modified 04-18 T
-Implemented Contracts 17 and 18
+@modified 05-06 S
+Implemented attributes, mutators, and getters
 """
 
 
@@ -22,6 +22,19 @@ class Protocol:
         self.longname = l
         self.field.append(f)
     
-    def 
+    def getName(self):
+		return self.name
+	
+	def getSize(self):
+		return self.size
+	
+	def getPos(self):
+		return self.pos
+	
+	def getFields(self):
+		return self.field
+	
+	def getLongname(self):
+		return self.longname
     
     pass #end Protocol class

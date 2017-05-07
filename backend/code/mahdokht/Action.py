@@ -3,8 +3,8 @@
 @author Mahdokht Afravi
 @created 04-18 T
 
-@modified 04-18 T
-Implemented Contracts 1-5
+@modified 05-07 U
+Implemented Abstract-ness (assertions)
 """
 import abc as abc
 import AnnotationAction, HidingAction, HookAction, RenameAction

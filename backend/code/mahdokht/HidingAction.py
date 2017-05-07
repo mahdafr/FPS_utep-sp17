@@ -3,8 +3,8 @@
 @author Mahdokht Afravi
 @created 04-18 T
 
-@modified 04-18 T
-Implemented Contracts 1 and 2
+@modified 05-07 U
+Debugged Contracts
 """
 import Action
 
@@ -27,6 +27,7 @@ class HidingAction(Action): #subclass
     @classmethod
     def deleteAction():
         """ Deletes the Action from this Rule """
+		##todo idk boiz
         pass
     
     
