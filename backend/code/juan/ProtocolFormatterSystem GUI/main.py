@@ -2,6 +2,7 @@ import sys
 import fnmatch
 import os.path
 import os
+import shutil
 
 import PyQt5
 from PyQt5.QtWidgets import *
@@ -40,27 +41,26 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
                 print("PDML Could not be converted")
             else:         
                 print("File Conveted and save as output.pdml")
-        else:
-            #PDML to List
-            i = 0
-            with f:
-                for line in f:
-                    self.captureWindow_list.insertItem(i, line)
-                    i += 1
-            
-            #reads the packet and creates .xml files for unknown protocols    
-            listOfProtocols = self.searchProtocols(filename)
-            self.loadFormatters(listOfProtocols)
-            listOfFormatters = self.getListOfFileNames(formatterFolderName,formatterFileExtension)
-            self.createNonFoundFiles(listOfFormatters,listOfProtocols,formatterFolderName,formatterFileExtension)
-            
-            #creates a historical copy of a PDML file if is not created yet
-            listOfPDMLfiles = self.getListOfPDMLfiles("pdml")
-            listOfHistorical = self.getListOfFileNames(historicalFolderName,historicalFileExtension)
-            self.createNonFoundFiles(listOfHistorical,listOfPDMLfiles,historicalFolderName,historicalFileExtension)
-            
-            self.createFolder(ScritpsFolderName)   
-            f.close()
+        #PDML to List
+        i = 0
+        with f:
+            for line in f:
+                self.captureWindow_list.insertItem(i, line)
+                i += 1
+        
+        #reads the packet and creates .xml files for unknown protocols    
+        listOfProtocols = self.searchProtocols(filename)
+        self.loadFormatters(listOfProtocols)
+        listOfFormatters = self.getListOfFileNames(formatterFolderName,formatterFileExtension)
+        self.createNonFoundFiles(listOfFormatters,listOfProtocols,formatterFolderName,formatterFileExtension)
+        
+        #creates a historical copy of a PDML file if is not created yet
+        listOfPDMLfiles = self.getListOfPDMLfiles("pdml")
+        listOfHistorical = self.getListOfFileNames(historicalFolderName,historicalFileExtension)
+        self.createNonFoundFiles(listOfHistorical,listOfPDMLfiles,historicalFolderName,historicalFileExtension)
+        
+        self.createFolder(ScritpsFolderName)   
+        f.close()
        
     #returns false of the file extension is not a pdml type
     def checkFileExtension(self,filename):
@@ -137,7 +137,15 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     
     # Action RESTORE trigger
     def triggeredRestoreButton(self):
-        print ("Pressed Action Restore")
+        try:
+            shutil.copy("./historical/cubic.pdml",".")
+            print("PDML File Successfully Restored")
+        #eg. src and dest are the same file
+        except shutil.Error as e:
+            print('Error: %s' % e)
+        #eg. source or destination doesn't exist
+        except IOError as e:
+            print('Error: %s' % e.strerror)
     
     #Action CLOSE trigger
     def triggeredCloseButton(self):
