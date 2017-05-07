@@ -1,5 +1,6 @@
 import sys
 import fnmatch
+import os.path
 import os
 
 import PyQt5
@@ -10,6 +11,7 @@ from PyQt5.QtGui import *
 
 # main window
 import main_window_gui
+#import tShark
 import xml.etree.ElementTree as ET
 
 class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
@@ -26,26 +28,47 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         
         # Search for a file and display it to captureWindow_captureFile
         filename = QFileDialog.getOpenFileName(self, 'Open file', 
-        '',"PDML or PCAP files (*.pdml *.pcap *.txt)")[0]
-        f = open(filename,'r')
-        #CHECK IF IT IS A PCAP OR PDML
-
-        with f:
-            data = f.read()
-            self.captureWindow_captureFile.insertPlainText(data)
+        '',"PDML or PCAP files (*.pdml *.pcap *.txt)")[0] 
+        f = open(filename,'r') 
         
-        #reads the packet and creates .xml files for unknown protocols    
-        listOfProtocols = self.searchProtocols(filename)
-        listOfFormatters = self.getListOfFileNames(formatterFolderName,formatterFileExtension)
-        self.createNonFoundFiles(listOfFormatters,listOfProtocols,formatterFolderName,formatterFileExtension)
-        
-        #creates a historical copy of a PDML file if is not created yet
-        listOfPDMLfiles = self.getListOfPDMLfiles("pdml")
-        listOfHistorical = self.getListOfFileNames(historicalFolderName,historicalFileExtension)
-        self.createNonFoundFiles(listOfHistorical,listOfPDMLfiles,historicalFolderName,historicalFileExtension)
-        
-        self.createFolder(ScritpsFolderName)   
-        f.close()
+        #TSHARK
+        fileExtension = self.checkFileExtension(filename)
+        if fileExtension == False:     
+            isFileConverted = False
+            #isFileConverted = self.Tshark.pcapToPDML(filename,"output.pdml")
+            if  isFileConverted == False:
+                print("PDML Could not be converted")
+            else:         
+                print("File Conveted and save as output.pdml")
+        else:
+            #PDML to List
+            i = 0
+            with f:
+                for line in f:
+                    self.captureWindow_list.insertItem(i, line)
+                    i += 1
+            
+            #reads the packet and creates .xml files for unknown protocols    
+            listOfProtocols = self.searchProtocols(filename)
+            self.loadFormatters(listOfProtocols)
+            listOfFormatters = self.getListOfFileNames(formatterFolderName,formatterFileExtension)
+            self.createNonFoundFiles(listOfFormatters,listOfProtocols,formatterFolderName,formatterFileExtension)
+            
+            #creates a historical copy of a PDML file if is not created yet
+            listOfPDMLfiles = self.getListOfPDMLfiles("pdml")
+            listOfHistorical = self.getListOfFileNames(historicalFolderName,historicalFileExtension)
+            self.createNonFoundFiles(listOfHistorical,listOfPDMLfiles,historicalFolderName,historicalFileExtension)
+            
+            self.createFolder(ScritpsFolderName)   
+            f.close()
+       
+    #returns false of the file extension is not a pdml type
+    def checkFileExtension(self,filename):
+        result = True
+        fileExtension = os.path.splitext(filename)[1]
+        if fileExtension == ".pcap":
+           result = False
+        return result
         
     #Search for the protocol names in the Caplture File
     #@Requires a file with file extension .pdml
@@ -59,7 +82,14 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
             if name not in protocolList:
                 protocolList.append(name)
         return protocolList
-    
+        
+    #Loads a list of formatters that can be applied to a capture file
+    def loadFormatters(self,formatterList):
+        i = 0
+        for formatterFile in formatterList:
+            self.FormatterWindow_formatterList.insertItem(i, formatterFile)
+            i += 1
+                
     # Searches file names with extension X and retrieves a list
     #@Requires folder name is in the same working directory
     #@Ensures a list of non repited file names
@@ -160,6 +190,12 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     #Action HISTORICAL COPY trigger
     def triggeredHistoricalButton(self):
         print ("Pressed Action Historical Copy")
+    
+    #Action HISTORICAL COPY trigger
+    def doubleClickedCaptureItem(self):
+        #print ("Double Clicked Capture File")
+        self.modeOfOperation_output.insertPlainText("EDIT MODE")
+        
         
     def __init__(self):
         super(self.__class__, self).__init__()
@@ -185,6 +221,9 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         self.actionHook.triggered.connect(lambda: self.triggeredHookButton())
         self.actionComand_Line.triggered.connect(lambda: self.triggeredCommandLineButton())
         self.actionHistorical_Copy.triggered.connect(lambda: self.triggeredHistoricalButton())
+        
+        ### List of Formatters
+        self.captureWindow_list.itemDoubleClicked.connect(lambda: self.doubleClickedCaptureItem())
 
 
 def main():

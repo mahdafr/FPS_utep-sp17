@@ -6,13 +6,11 @@
 """
 import commands
 """ Contract 27: Convert PCAP to PDML """
-# @requires the tile has not been opened by PFS before
+# @requires File extension of a file to be a pcap for the second parameter and a PDML for the third parameter
 # @ensures tShark returns no error on accepting the PDML file to parse
-def sendPCAP(pcap,pdmlName):
+def sendPCAP(self,pcapfilename,pdmlFilename):
 	""" Receives a PCAP file to be parsed by the tShark tool """
-	pcapFile = '27.pcap'
-	pdmlFile = 'untitled1.pdml'
-	commands.getoutput('tshark –r %r -T %r')
+	commands.getoutput('tshark -T pdml -r %r -V | tee %r' % {pcapfilename, pdmlFilename})
 
 # @requires tShark parsed the PDML with no errors
 # @ensures a new file type of PDML is stored on the file system to be opened by PFS
