@@ -15,7 +15,7 @@ class Field:
         self.hasAnnotation = False
 
     def getFieldName(self):
-        print("Field name is:", self.name)
+        #print("Field name is:", self.name)
         return self.name
 
     def isFieldDisplayed(self):
@@ -71,32 +71,32 @@ class Field:
             self.hasAnnotation = True
 
 # Testing
-field1 = Field("num", "", "")
-field2 = Field("len", "", "")
-
-field1.isFieldDisplayed()
-field2.isFieldDisplayed()
-
-field1.hideField()
-
-field1.isFieldDisplayed()
-field2.isFieldDisplayed()
-
-field1.getFieldName()
-field1.renameField("rename_field", "numchanged")
-field1.getFieldName()
-
-print("\nWorking with field2")
-field2.getFieldName()
-field2.getHook()
-field2.addHook("add_hook", "bla_bla.script")
-field2.getHook()
-field2.getAnnotation()
-field2.addAnnotation("add_annotation", "bla/bla2")
-field2.getAnnotation()
-
-print("\nWorking with field1")
-field1.getFieldName()
-field1.getAnnotation()
-field1.addAnnotation("add_annotation", "bla/bla")
-field1.getAnnotation()
+#field1 = Field("num", "", "")
+#field2 = Field("len", "", "")
+#
+#field1.isFieldDisplayed()
+#field2.isFieldDisplayed()
+#
+#field1.hideField()
+#
+#field1.isFieldDisplayed()
+#field2.isFieldDisplayed()
+#
+#field1.getFieldName()
+#field1.renameField("rename_field", "numchanged")
+#field1.getFieldName()
+#
+#print("\nWorking with field2")
+#field2.getFieldName()
+#field2.getHook()
+#field2.addHook("add_hook", "bla_bla.script")
+#field2.getHook()
+#field2.getAnnotation()
+#field2.addAnnotation("add_annotation", "bla/bla2")
+#field2.getAnnotation()
+#
+#print("\nWorking with field1")
+#field1.getFieldName()
+#field1.getAnnotation()
+#field1.addAnnotation("add_annotation", "bla/bla")
+#field1.getAnnotation()
