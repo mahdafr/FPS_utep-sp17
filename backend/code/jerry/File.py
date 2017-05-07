@@ -6,7 +6,7 @@ from jerry import HistoricalCopy
 """
 @author Gerardo Fang
 @created 04-18 T
-@lastmod 04-21 F
+@lastmod 05-07 S
 """ 
 class File:
 """ Contract 7: Create Historical Copy """
@@ -24,9 +24,16 @@ def createHistoricalCopy(pdml):
     HistoricalCopy.createHistoricalCopy(pdml)
     return "true"
 
-# @requires the file does not already exist
+# @requires the file does not already exist in the folder
 # @ensures 
-def createFile(file_name):
-    """ Creates a new file instance """
-    f= open(file_name,"w+")
-    f.close() 
+def createFile(file_name, folderName, compareFormatters, currentList):
+    """ Creates a new file instance for non existent formatters"""
+	if not os.path.exists(folderName):
+			os.makedirs(folderName)
+			self.createFolder(folderName)
+		for protocol in currentList:
+			if protocol not in compareFormatters:
+				f= open("%s/%s.%s" %(folderName,protocol,fileExtension),"w+")
+		print("File successfully created")
+    	f.close() 
+	
