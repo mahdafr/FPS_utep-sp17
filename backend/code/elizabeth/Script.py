@@ -1,44 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-@author Mahdokht Afravi
+@author Ivonne Lopez
 @created 04-18 T
 """
+import os.path
+import os
 
-""" Contract 24: Manage Script """
-# @requires 
-# @ensures the script python file will be created if it does not already exist
-def createScript(hook):
-    """ Creates a script for this hook """
-	
+class Script:
 
-# @requires the script is associated with hook
-# @ensures the script file is not deleted
-def deleteScript(hook):
-    """ Deletes the script from this hook """
-	
+    def __init__(self, fileName):
+        if(os.path.exists(fileName)):
+            f = open(fileName, "r+")
+        else:
+            f = open(fileName, "w")
+        self.file = f
 
-""" Contract 25: Modify Script """
-# @requires the script python file exists
-# @ensures 
-def updateAlgorithm(algorithm):
-    """ Overwrites the existing algorithm to contain this string """
-	
+    def printFile(self):
+        file_contents = self.file.read()
+        print (file_contents)
+        
 
-# @requires the string is a valid file system path to this algorithm
-# @ensures the script is not deleted
-def updatePath(path):
-    """ Sets the new path to this script """
-	
-
-""" Contract 26: Run Script """
-# @requires the script has completed execution and has a return value
-# @ensures 
-def getReturnValue():
-    """ Gets the return value from the script's execution """
-	
-
-# @requires the script's return value type matches the field's value type
-# @ensures 
-def updateField(field):
-    """ Updates the field associated with this hook """
-	
+script1 = Script("lol.txt")
+script1.printFile()
