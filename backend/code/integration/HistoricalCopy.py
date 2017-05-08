@@ -4,12 +4,12 @@
 @created 04-18 T
 @lastmod 04-21 F
 
-@modified 05-07 U 
-
+@modified 05-07 U by mafravi: made into a class
 
 RUN FOR TESTS
 """
 import glob, os, shutil
+import Tshark
 
 class HistoricalCopy():
     
@@ -33,6 +33,10 @@ class HistoricalCopy():
                 os.rename(filename, filename[:-5] + '_historical.pdml')
                 return True
     
+    def convertPCAP(self,pcap):
+        """ Receives a PCAP file to be parsed by the tShark tool """
+        Tshark.sendPCAP(pcap)
+        return True
     
     # @requires the file has not been opened by PFS before
     # @ensures 

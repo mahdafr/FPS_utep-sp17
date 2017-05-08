@@ -8,8 +8,11 @@
 import xml.etree.ElementTree as ET
 
 class ProtocolIdentifier:
-
-    """ Contract 20: Scan PDML """
+    listOfProtocols = []
+    file = ""
+    listOfFormatters = []
+    fileFormatters = ""
+    
     
     def __init__(self, file, fileF):
         self.listOfProtocols = []
@@ -60,11 +63,12 @@ class ProtocolIdentifier:
     def createFormatter(rule):
     	""" Receives a list of rules to build a new formatter """
 
+
+"""
 object1 = ProtocolIdentifier('cubic.pdml', 'formatters.txt')
 object1.identifyProtocols()
 object1.printList()
-
-
+"""
     
 
 

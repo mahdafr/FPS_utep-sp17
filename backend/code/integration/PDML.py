@@ -7,14 +7,15 @@
 Debugging
 """
 import elementTree as et, pickle as p
+import File
 
-class PDML:
+class PDML(File):
     formatter = [] #list of applied formatters
     fileName = "" #string: <name>.pdml
     rule = [] #list of Rule objects in this
     protocol = [] #list of the Protocols within the PDML
     pdml = "" #the PDML parsed by elementTree
-    historicalCopy = fileName + "_historical"
+    historicalCopy = fileName + "_historical.pdml"
     
     def __init__(self,name):
         self.fileName = name + ".pdml"
@@ -57,7 +58,8 @@ class PDML:
     # @ensures 
     def acceptChanges(self):
         """ Saves the changes aplied to this PDML in the PFS """
-        p.append(self.pdml)
+        f = open(p, "w")
+        f.write(self.pdml)
     
 
     # @requires the HistoricalCopy exists within the PFS

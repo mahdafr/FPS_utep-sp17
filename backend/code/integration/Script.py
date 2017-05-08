@@ -29,7 +29,7 @@ class Script:
         self.path = p
 
     def run(self):
-        exec(self.returnValue = open(self.path).read()) #run the script
+        exec(self.returnValue = open(self.path).read()) #get return value on run
         pass
 
     def getReturnValue(self):
