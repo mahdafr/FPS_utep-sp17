@@ -3,12 +3,15 @@ import fnmatch
 import os.path
 import os
 import shutil
+import json
 
 import PyQt5
 from PyQt5.QtWidgets import *
 #not sure imports
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from pathlib import Path
+from lxml import etree
 
 # main window
 import main_window_gui
@@ -26,6 +29,8 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         ScritpsFolderName = "scritps"
         formatterFileExtension = "xml"
         historicalFileExtension = "pdml"
+        self.createFolder(ScritpsFolderName)
+        self.createFolder(historicalFolderName)
         
         # Search for a file and display it to captureWindow_captureFile
         filename = QFileDialog.getOpenFileName(self, 'Open file', 
@@ -41,25 +46,28 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
                 print("PDML Could not be converted")
             else:         
                 print("File Conveted and save as output.pdml")
+                
         #PDML to List
         i = 0
         with f:
             for line in f:
                 self.captureWindow_list.insertItem(i, line)
+                self.Historical_CaptureText.insertPlainText(line)
                 i += 1
-        
+                
+        #HISTORICAL
+        hf = open(filename,'r')
+        with hf:
+            for line in hf:
+                self.Historical_CaptureText.insertPlainText(line)
+         
         #reads the packet and creates .xml files for unknown protocols    
         listOfProtocols = self.searchProtocols(filename)
         self.loadFormatters(listOfProtocols)
         listOfFormatters = self.getListOfFileNames(formatterFolderName,formatterFileExtension)
         self.createNonFoundFiles(listOfFormatters,listOfProtocols,formatterFolderName,formatterFileExtension)
-        
         #creates a historical copy of a PDML file if is not created yet
-        listOfPDMLfiles = self.getListOfPDMLfiles("pdml")
-        listOfHistorical = self.getListOfFileNames(historicalFolderName,historicalFileExtension)
-        self.createNonFoundFiles(listOfHistorical,listOfPDMLfiles,historicalFolderName,historicalFileExtension)
-        
-        self.createFolder(ScritpsFolderName)   
+        self.createHistorical(filename)
         f.close()
        
     #returns false of the file extension is not a pdml type
@@ -80,7 +88,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         for proto in root.iter('proto'):
             name = proto.get('name')
             if name not in protocolList:
-                protocolList.append(name)
+               protocolList.append(name)
         return protocolList
         
     #Loads a list of formatters that can be applied to a capture file
@@ -121,8 +129,26 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         for protocol in listToBeCreated:
             if protocol not in compareAgainstList:
                 f= open("%s/%s.%s" %(folderName,protocol,fileExtension),"w+")
-        print("Folder & files successfully created")
-        
+        print("Formatter Files Successfully Created")
+    
+    #Checks wether the a historical copy under the same name is already stored in
+    #the historical folder otherwise create a copy
+    #@Requires
+    #@Ensures
+    def createHistorical(self,filename):
+        fileExists = os.path.isfile('./historical/%r' %filename)
+        print(fileExists)
+        if fileExists == False:
+            try:
+                shutil.copy2("./cubic.pdml","./historical/")
+                print("Historical Copy Successfully Created")
+            #eg. src and dest are the same file
+            except shutil.Error as e:
+                print('Error: %s' % e)
+            #eg. source or destination doesn't exist
+            except IOError as e:
+                print('Error: %s' % e.strerror)
+     
     #Checks wether the folder is already created of not it creates it
     #under the same working directory
     #@Requires
@@ -130,7 +156,22 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     def createFolder(self,folderName):
         if not os.path.exists(folderName):
             os.makedirs(folderName)
-                
+    
+    #Search for the protocol names in the Caplture File
+    #@Requires a file with file extension .pdml
+    #@Ensures a list of non repited protoc3ols
+    def FilterProtocol(self,filename,protocolName):
+        xml = ET.parse(filename)
+        root = xml.getroot()
+        for elem in root:
+            proto = elem.find('proto')
+            protoJson = proto.attrib
+            print(protoJson)
+            if (proto.find('name') == protocolName):
+                root.remove(elem)
+                print("perro")
+        xml.write('output.xml')
+                                
     #Action SAVE trigger
     def triggeredSaveButton(self):
         print ("Pressed Action Save")
@@ -138,7 +179,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     # Action RESTORE trigger
     def triggeredRestoreButton(self):
         try:
-            shutil.copy("./historical/cubic.pdml",".")
+            shutil.copy2("./historical/cubic.pdml",".")
             print("PDML File Successfully Restored")
         #eg. src and dest are the same file
         except shutil.Error as e:
@@ -149,7 +190,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     
     #Action CLOSE trigger
     def triggeredCloseButton(self):
-        print ("Pressed Action Open")
+        print ("Pressed Action Closed")
     
     ### EDIT Controllers
     
@@ -203,12 +244,17 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     def doubleClickedCaptureItem(self):
         #print ("Double Clicked Capture File")
         self.modeOfOperation_output.insertPlainText("EDIT MODE")
+    
+    def clickedfilterBarButton(self):
+        protocolName = self.Filter_Bar_input.toPlainText()
+        self.FilterProtocol("cubic.pdml",protocolName)
         
         
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
-
+        
+        self.Filter_Bar_Button.clicked.connect(lambda: self.clickedfilterBarButton())
         ### FILE
         self.actionOpen.triggered.connect(lambda: self.triggeredOpenButton())
         self.actionSave.triggered.connect(lambda: self.triggeredSaveButton())
