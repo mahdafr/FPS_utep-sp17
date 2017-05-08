@@ -17,11 +17,11 @@ class Field:
     
     def __init__(self,n,p,s,sd,h,l):
         self.name = n
-		self.hidden = h
-		self.pos = p
-		self.show = s
-		self.showdtl = sd
-		self.longname = l
+        self.hidden = h
+        self.pos = p
+        self.show = s
+        self.showdtl = sd
+        self.longname = l
     
     def getName(self):
         return self.name
@@ -31,24 +31,23 @@ class Field:
         return self.pos
     def getShow(self):
         return self.show
-		
-	""" Updating the Field (done only by the Formatter) """
-	def setName(self,n):
-		self.name = n
-	def hide(self):
-		self.hidden = True
-	def unHide(self):
-		self.hidden = False
-	def setMask(self,m):
-		self.mask = m
-	def setPos(self,p):
-		self.pos = p
-	def setShow(self,s):
-		self.show = s
-	def setShowdtl(self,sd):
-		self.showdtl = sd
-	def setLongname(self,l):
-		self.longname = l
-	
+
+    """ Updating the Field (done only by the Formatter) """
+    def setName(self,n):
+        self.name = n
+    def hide(self):
+        self.hidden = True
+    def unHide(self):
+        self.hidden = False
+    def setMask(self,m):
+        self.mask = m
+    def setPos(self,p):
+        self.pos = p
+    def setShow(self,s):
+        self.show = s
+    def setShowdtl(self,sd):
+        self.showdtl = sd
+    def setLongname(self,l):
+        self.longname = l
     
     pass #end Field class

@@ -25,9 +25,9 @@ class HidingAction(Action): #subclass
     # @requires 
     # @ensures 
     @classmethod
-    def deleteAction():
+    def deleteAction(self):
         """ Deletes the Action from this Rule """
-		##todo idk boiz
+        super(HidingAction,self).deleteAction(self)
         pass
     
     

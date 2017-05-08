@@ -23,18 +23,14 @@ class Protocol:
         self.field.append(f)
     
     def getName(self):
-		return self.name
-	
-	def getSize(self):
-		return self.size
-	
-	def getPos(self):
-		return self.pos
-	
-	def getFields(self):
-		return self.field
-	
-	def getLongname(self):
-		return self.longname
+        return self.name
+    def getSize(self):
+        return self.size
+    def getPos(self):
+        return self.pos
+    def getFields(self):
+        return self.field
+    def getLongname(self):
+        return self.longname
     
     pass #end Protocol class
