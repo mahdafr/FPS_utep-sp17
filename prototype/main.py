@@ -15,7 +15,7 @@ from lxml import etree
 
 # main window
 import main_window_gui
-#import tShark
+import tShark
 import xml.etree.ElementTree as ET
 
 class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
@@ -41,7 +41,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         fileExtension = self.checkFileExtension(filename)
         if fileExtension == False:     
             isFileConverted = False
-            #isFileConverted = self.Tshark.pcapToPDML(filename,"output.pdml")
+            isFileConverted = self.Tshark.pcapToPDML(filename,"output.pdml")
             if  isFileConverted == False:
                 print("PDML Could not be converted")
             else:         
