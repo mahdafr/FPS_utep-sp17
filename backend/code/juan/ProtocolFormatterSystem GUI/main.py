@@ -4,6 +4,7 @@ import os.path
 import os
 import shutil
 import json
+from bs4 import BeautifulSoup
 
 import PyQt5
 from PyQt5.QtWidgets import *
@@ -15,15 +16,15 @@ from lxml import etree
 
 # main window
 import main_window_gui
-import tShark
+#import tShark
 import xml.etree.ElementTree as ET
 
 class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     
     ### OPEN Controllers
-    
     #ACTION OPNE TRIGGERED
     def triggeredOpenButton(self):
+        captureList = []
         formatterFolderName = "formatters"
         historicalFolderName = "historical"
         ScritpsFolderName = "scritps"
@@ -41,7 +42,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         fileExtension = self.checkFileExtension(filename)
         if fileExtension == False:     
             isFileConverted = False
-            isFileConverted = self.Tshark.pcapToPDML(filename,"output.pdml")
+            #isFileConverted = self.Tshark.pcapToPDML(filename,"output.pdml")
             if  isFileConverted == False:
                 print("PDML Could not be converted")
             else:         
@@ -52,6 +53,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         with f:
             for line in f:
                 self.captureWindow_list.insertItem(i, line)
+                captureList.append(line)
                 self.Historical_CaptureText.insertPlainText(line)
                 i += 1
                 
@@ -242,8 +244,14 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     
     #Action HISTORICAL COPY trigger
     def doubleClickedCaptureItem(self):
-        #print ("Double Clicked Capture File")
-        self.modeOfOperation_output.insertPlainText("EDIT MODE")
+        print(self.captureWindow_list.currentRow())
+        print(self.captureWindow_list.currentItem().text())
+        data = self.captureWindow_list.currentItem().text()
+        dataStr = '''%r''' % data
+        soup = BeautifulSoup(data, "lxml")    
+        spotter = soup.spotter
+        print (spotter['name'])
+        #self.modeOfOperation_output.insertPlainText("EDIT MODE")
     
     def clickedfilterBarButton(self):
         protocolName = self.Filter_Bar_input.toPlainText()
