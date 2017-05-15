@@ -244,13 +244,10 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     
     #Action HISTORICAL COPY trigger
     def doubleClickedCaptureItem(self):
-        print(self.captureWindow_list.currentRow())
-        print(self.captureWindow_list.currentItem().text())
-        data = self.captureWindow_list.currentItem().text()
-        dataStr = '''%r''' % data
-        soup = BeautifulSoup(data, "lxml")    
-        spotter = soup.spotter
-        print (spotter['name'])
+        fieldTextLine = self.captureWindow_list.currentItem().text()
+        soup = BeautifulSoup(fieldTextLine, "lxml")    
+        field = soup.field
+        print (field['value'])
         #self.modeOfOperation_output.insertPlainText("EDIT MODE")
     
     def clickedfilterBarButton(self):
