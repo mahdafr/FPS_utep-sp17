@@ -324,7 +324,31 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         fp.close()
     
     def clickedAnnotateButton(self):
-        print("two")
+        self.modeOfOperation_output.setDisabled(False)
+        self.modeOfOperation_output.clear()
+        captureList = []
+        self.modeOfOperation_output.insertPlainText("EDIT MODE")
+        self.modeOfOperation_output.setDisabled(True)
+        fp = open("cubic.pdml", 'r')
+        target = open("testing.pdml", 'w')
+        annotateField = self.Edit_Window_filedAnnotation.toPlainText()
+        annotationString = '>\n' + '\t<annotation id = '+ self.getFieldPressed +'>' + annotateField + '</annotation>'
+        for line in fp:
+            if self.getFieldPressed in line:
+                line = line.replace( ">", annotationString)
+                target.write(line)
+            else:
+                target.write(line)
+        i = 0
+        f = open("testing.pdml",'r') 
+        with f:
+            for line in f:
+                self.captureWindow_list.insertItem(i, line)
+                captureList.append(line)
+                self.Historical_CaptureText.insertPlainText(line)
+                i += 1
+        fp.close()
+        print("annotation added") 
     
     def clickedHideFiledButton(self):
         self.modeOfOperation_output.setDisabled(False)
@@ -391,6 +415,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         self.modeOfOperation_output.setDisabled(True)
         self.getFieldPressed = "nothing"
         self.getValueofField = "nothing"
+        self.getAnnotationofField = "nothing"
 
 
 def main():
