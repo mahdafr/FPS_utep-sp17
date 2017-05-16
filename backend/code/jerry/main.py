@@ -15,6 +15,7 @@ from pathlib import Path
 from lxml import etree
 from formatter import Formatter
 
+
 # main window
 import main_window_gui
 #import tShark
@@ -24,6 +25,14 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     
     ### OPEN Controllers
     #ACTION OPNE TRIGGERED
+    def setLineFormat(self, lineNumber, format):
+        cursor = QTextCursor(self.textEdit.document().findBlockByNumber(lineNumber))
+        cursor.setBlockFormat(format)
+        format = QTextBlockFormat()
+        format.setBackground(Qt.yellow)
+        # or
+        #format.clearBackground() 
+
     def triggeredOpenButton(self):
         captureList = []
         formatterFolderName = "formatters"
@@ -273,27 +282,73 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
             field = soup.field
             print (field['name'])
             print (field['value'])
+            self.getFieldPressed = field['name']
             self.Edit_Window_FiledList.insertItem(0, field['name'])
+            self.Edit_Window_filedValue.clear()
             self.Edit_Window_filedValue.insertPlainText(field['value'])
+            self.getValueofField = field['value']
             #self.modeOfOperation_output.insertPlainText("EDIT MODE")
             formatter = Formatter()
             formatter.appendHide(field['name'],field['value'])
             formatter.createFormatter()
         self.modeOfOperation_output.clear()
         self.modeOfOperation_output.insertPlainText("EDIT MODE")
-        self.modeOfOperation_output.setDisabled(True)            
+        self.modeOfOperation_output.setDisabled(True)  
+          
     def clickedfilterBarButton(self):
         protocolName = self.Filter_Bar_input.toPlainText()
         self.FilterProtocol("cubic.pdml",protocolName)
     
     def clickedEditChangeValueButton(self):
-        print("one")
+        self.modeOfOperation_output.setDisabled(False)
+        self.modeOfOperation_output.clear()
+        captureList = []
+        self.modeOfOperation_output.insertPlainText("EDIT MODE")
+        self.modeOfOperation_output.setDisabled(True)
+        fp = open("cubic.pdml", 'r')
+        target = open("testing.pdml", 'w')
+        for line in fp:
+            if self.getFieldPressed in line:
+                line = line.replace(self.getValueofField, 'almostthere')
+                target.write(line)
+            else:
+                target.write(line)
+        i = 0
+        f = open("testing.pdml",'r') 
+        with f:
+            for line in f:
+                self.captureWindow_list.insertItem(i, line)
+                captureList.append(line)
+                self.Historical_CaptureText.insertPlainText(line)
+                i += 1
+        fp.close()
     
     def clickedAnnotateButton(self):
         print("two")
     
     def clickedHideFiledButton(self):
-        print("tree")
+        self.modeOfOperation_output.setDisabled(False)
+        self.modeOfOperation_output.clear()
+        captureList = []
+        self.modeOfOperation_output.insertPlainText("EDIT MODE")
+        self.modeOfOperation_output.setDisabled(True)
+        fp = open("cubic.pdml", 'r')
+        target = open("testing.pdml", 'w')
+        for line in fp:
+            if self.getFieldPressed in line:
+                line = line.replace('field', 'field hide = "true"')
+                target.write(line)
+            else:
+                target.write(line)
+        i = 0
+        f = open("testing.pdml",'r') 
+        with f:
+            for line in f:
+                self.captureWindow_list.insertItem(i, line)
+                captureList.append(line)
+                self.Historical_CaptureText.insertPlainText(line)
+                i += 1
+        fp.close()
         
         
     def __init__(self):
@@ -334,6 +389,8 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         self.modeOfOperation_output.clear()
         self.modeOfOperation_output.insertPlainText("NO PDML")
         self.modeOfOperation_output.setDisabled(True)
+        self.getFieldPressed = "nothing"
+        self.getValueofField = "nothing"
 
 
 def main():
