@@ -43,8 +43,6 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         if fileExtension == False:     
             os.system('tshark -T pdml -r %r -V | tee output.pdml' % filename)
             isFileConverted = os.path.isfile('./output.pdml')
-            print(isFileConverted)
-            #MISSING CHECKING
             if  isFileConverted == False:
                 print("PDML Could not be converted")
             else:         
@@ -203,6 +201,10 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
                 self.Historical_CaptureText.insertPlainText(line)
                 i += 1
         fp.close()
+        
+    #Searches for any attribute in a capture file    
+    def searchPDML(self,filename,protocolName):
+        print("Searching PDML")
                                 
     #Action SAVE trigger
     def triggeredSaveButton(self):
@@ -296,29 +298,29 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         protocolName = self.Filter_Bar_input.toPlainText()
         self.FilterProtocol("cubic.pdml",protocolName)
     
+    def clickedPDMLsearchButton(self):
+        protocolName = self.Filter_Bar_input.toPlainText()
+        self.searchPDML("cubic.pdml",protocolName)
+    
     def clickedEditChangeValueButton(self):
         fieldName = self.Edit_Window_FiledList.currentItem().text()
         fieldValue = self.Edit_Window_filedValue.toPlainText()
         self.formatter.appendHide(fieldName,fieldValue)
-        print("change Value") 
            
     def clickedAnnotateButton(self):
         fieldName = self.Edit_Window_FiledList.currentItem().text()
         fieldValue = self.Edit_Window_filedValue.toPlainText()
         annotateField = self.Edit_Window_filedAnnotation.toPlainText()
         self.formatter.appendAnnotation(fieldName,fieldValue,annotateField)
-        print("annotation added") 
     
     def clickedHideFiledButton(self):
         fieldName = self.Edit_Window_FiledList.currentItem().text()
         fieldValue = self.Edit_Window_filedValue.toPlainText()
         self.formatter.appendRename(fieldName,fieldValue)
-        print("Hide Filed") 
         
     def clickedCreateRule(self):
         fieldValue = self.Edit_Window_filedValue.toPlainText()
         self.formatter.createFormatter()
-        print("CreateRule") 
         
     def __init__(self):
         super(self.__class__, self).__init__()
@@ -328,7 +330,8 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         self.FormatterWindow_createRule.clicked.connect(lambda: self.clickedCreateRule())
         #Protocol Filter
         self.Filter_Bar_Button.clicked.connect(lambda: self.clickedfilterBarButton())
-        
+        #PDML Search Button
+        self.search_pdml_button.clicked.connect(lambda: self.clickedPDMLsearchButton())
         ### EDIT WINDOW
         self.Edit_Window_changeValueButton.clicked.connect(lambda: self.clickedEditChangeValueButton())
         self.Edit_Window_AnnotateButton.clicked.connect(lambda: self.clickedAnnotateButton())
