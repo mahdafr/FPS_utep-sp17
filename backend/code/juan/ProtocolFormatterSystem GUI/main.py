@@ -13,6 +13,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from pathlib import Path
 from lxml import etree
+from formatter import Formatter
 
 # main window
 import main_window_gui
@@ -52,6 +53,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         i = 0
         with f:
             for line in f:
+                #If it is a packet rename it as packet id i
                 self.captureWindow_list.insertItem(i, line)
                 captureList.append(line)
                 self.Historical_CaptureText.insertPlainText(line)
@@ -171,7 +173,6 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
             print(protoJson)
             if (proto.find('name') == protocolName):
                 root.remove(elem)
-                print("perro")
         xml.write('output.xml')
                                 
     #Action SAVE trigger
@@ -247,9 +248,15 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         fieldTextLine = self.captureWindow_list.currentItem().text()
         soup = BeautifulSoup(fieldTextLine, "lxml")    
         field = soup.field
+        print (field['name'])
         print (field['value'])
+        self.Edit_Window_FiledList.insertItem(0, field['name'])
+        self.Edit_Window_filedValue.insertPlainText(field['value'])
         #self.modeOfOperation_output.insertPlainText("EDIT MODE")
-    
+        formatter = Formatter()
+        formatter.appendHide(field['name'],field['value'])
+        formatter.createFormatter()
+            
     def clickedfilterBarButton(self):
         protocolName = self.Filter_Bar_input.toPlainText()
         self.FilterProtocol("cubic.pdml",protocolName)
@@ -260,6 +267,12 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         self.setupUi(self) # gets defined in the UI file
         
         self.Filter_Bar_Button.clicked.connect(lambda: self.clickedfilterBarButton())
+        
+        ### EDIT WINDOW
+        self.Edit_Window_changeValueButton.clicked.connect(lambda: self.clickedEditChangeValueButton())
+        self.Edit_Window_AnnotateButton.clicked.connect(lambda: self.clickedAnnotateButton())
+        self.Edit_Window_hideFiledButton.clicked.connect(lambda: self.clickedHideFiledButton())
+
         ### FILE
         self.actionOpen.triggered.connect(lambda: self.triggeredOpenButton())
         self.actionSave.triggered.connect(lambda: self.triggeredSaveButton())
