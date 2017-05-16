@@ -349,7 +349,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
                 i += 1
         fp.close()
         print("annotation added") 
-    
+    #added code here--------------------------------------------------------
     def clickedHideFiledButton(self):
         self.modeOfOperation_output.setDisabled(False)
         self.modeOfOperation_output.clear()
