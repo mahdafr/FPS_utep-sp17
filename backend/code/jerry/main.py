@@ -13,7 +13,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from pathlib import Path
 from lxml import etree
-
+from formatter import Formatter
 
 # main window
 import main_window_gui
@@ -53,6 +53,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         i = 0
         with f:
             for line in f:
+                #If it is a packet rename it as packet id i
                 self.captureWindow_list.insertItem(i, line)
                 captureList.append(line)
                 self.Historical_CaptureText.insertPlainText(line)
@@ -194,8 +195,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
                 self.Historical_CaptureText.insertPlainText(line)
                 i += 1
         fp.close()
-
-                       
+                                
     #Action SAVE trigger
     def triggeredSaveButton(self):
         print ("Pressed Action Save")
@@ -271,15 +271,29 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         soupstring = str(soup)
         if "value=" in soupstring:
             field = soup.field
+            print (field['name'])
             print (field['value'])
+            self.Edit_Window_FiledList.insertItem(0, field['name'])
+            self.Edit_Window_filedValue.insertPlainText(field['value'])
+            #self.modeOfOperation_output.insertPlainText("EDIT MODE")
+            formatter = Formatter()
+            formatter.appendHide(field['name'],field['value'])
+            formatter.createFormatter()
         self.modeOfOperation_output.clear()
         self.modeOfOperation_output.insertPlainText("EDIT MODE")
-        self.modeOfOperation_output.setDisabled(True)
-
-    
+        self.modeOfOperation_output.setDisabled(True)            
     def clickedfilterBarButton(self):
         protocolName = self.Filter_Bar_input.toPlainText()
         self.FilterProtocol("cubic.pdml",protocolName)
+    
+    def clickedEditChangeValueButton(self):
+        print("one")
+    
+    def clickedAnnotateButton(self):
+        print("two")
+    
+    def clickedHideFiledButton(self):
+        print("tree")
         
         
     def __init__(self):
@@ -287,6 +301,12 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         self.setupUi(self) # gets defined in the UI file
         
         self.Filter_Bar_Button.clicked.connect(lambda: self.clickedfilterBarButton())
+        
+        ### EDIT WINDOW
+        self.Edit_Window_changeValueButton.clicked.connect(lambda: self.clickedEditChangeValueButton())
+        self.Edit_Window_AnnotateButton.clicked.connect(lambda: self.clickedAnnotateButton())
+        self.Edit_Window_hideFiledButton.clicked.connect(lambda: self.clickedHideFiledButton())
+
         ### FILE
         self.actionOpen.triggered.connect(lambda: self.triggeredOpenButton())
         self.actionSave.triggered.connect(lambda: self.triggeredSaveButton())
