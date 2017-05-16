@@ -1,1 +1,0 @@
-<rule><filter><action name="num" type="hide" value="1" /><action name="num" type="hide" value="1" /><action annotation="PERRO" name="num" type="annotation" value="1" /><action name="num" type="rename" value="1" /></filter></rule>
