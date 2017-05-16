@@ -4,7 +4,6 @@
 @author Juan Martinez
 @created 04-18 T
 """
-import commands
 import os
 class Tshark:
 	""" Contract 27: Convert PCAP to PDML """
@@ -13,6 +12,6 @@ class Tshark:
 	def pcapToPDML(self,pcapfilename,pdmlFile):
 		isFileConverted = False
 		""" Receives a PCAP file to be parsed by the tShark tool """
-		commands.getoutput('tshark -T pdml -r %r -V | tee %r' % {pcapfilename, pdmlFile})
+		os.system('tshark -T pdml -r %r -V | tee %r' % {pcapfilename, pdmlFile})
 		isFileConverted = os.path.isfile('./%r' % convertedFilename)
 		return isFileConverted

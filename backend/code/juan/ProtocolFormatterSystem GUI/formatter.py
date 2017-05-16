@@ -42,6 +42,13 @@ class Formatter:
 		actionElement.set("name",name)
 		actionElement.set("value",value)
 		
+	def setFilter(self,value):
+		Formatter.filterElement.set("value",value)
+	
+	# MISSING NUMERATING RULES
+	def setRuleId(self,value):
+		Formatter.filterElement.set("id",value)
+		
 	def createFormatter(self):
 		tree = xml.ElementTree(Formatter.root)
 		#tree.write('./formatter/%r.xml' % formatterName)

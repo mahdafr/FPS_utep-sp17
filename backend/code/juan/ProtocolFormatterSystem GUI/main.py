@@ -16,8 +16,7 @@ from lxml import etree
 from formatter import Formatter
 
 # main window
-import main_window_gui
-#import tShark
+import main_window_gui,tShark
 import xml.etree.ElementTree as ET
 
 class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
@@ -42,37 +41,39 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         #TSHARK
         fileExtension = self.checkFileExtension(filename)
         if fileExtension == False:     
-            isFileConverted = False
-            #isFileConverted = self.Tshark.pcapToPDML(filename,"output.pdml")
+            os.system('tshark -T pdml -r %r -V | tee output.pdml' % filename)
+            isFileConverted = os.path.isfile('./output.pdml')
+            print(isFileConverted)
+            #MISSING CHECKING
             if  isFileConverted == False:
                 print("PDML Could not be converted")
             else:         
                 print("File Conveted and save as output.pdml")
-                
-        #PDML to List
-        i = 0
-        with f:
-            for line in f:
-                #If it is a packet rename it as packet id i
-                self.captureWindow_list.insertItem(i, line)
-                captureList.append(line)
-                self.Historical_CaptureText.insertPlainText(line)
-                i += 1
-                
-        #HISTORICAL
-        hf = open(filename,'r')
-        with hf:
-            for line in hf:
-                self.Historical_CaptureText.insertPlainText(line)
-         
-        #reads the packet and creates .xml files for unknown protocols    
-        listOfProtocols = self.searchProtocols(filename)
-        self.loadFormatters(listOfProtocols)
-        listOfFormatters = self.getListOfFileNames(formatterFolderName,formatterFileExtension)
-        self.createNonFoundFiles(listOfFormatters,listOfProtocols,formatterFolderName,formatterFileExtension)
-        #creates a historical copy of a PDML file if is not created yet
-        self.createHistorical(filename)
-        f.close()
+        else:
+            #PDML to List
+            i = 0
+            with f:
+                for line in f:
+                    #If it is a packet rename it as packet id i
+                    self.captureWindow_list.insertItem(i, line)
+                    captureList.append(line)
+                    self.Historical_CaptureText.insertPlainText(line)
+                    i += 1
+                    
+            #HISTORICAL
+            hf = open(filename,'r')
+            with hf:
+                for line in hf:
+                    self.Historical_CaptureText.insertPlainText(line)
+             
+            #reads the packet and creates .xml files for unknown protocols    
+            listOfProtocols = self.searchProtocols(filename)
+            self.loadFormatters(listOfProtocols)
+            listOfFormatters = self.getListOfFileNames(formatterFolderName,formatterFileExtension)
+            self.createNonFoundFiles(listOfFormatters,listOfProtocols,formatterFolderName,formatterFileExtension)
+            #creates a historical copy of a PDML file if is not created yet
+            self.createHistorical(filename)
+            f.close()
        
     #returns false of the file extension is not a pdml type
     def checkFileExtension(self,filename):
@@ -169,6 +170,13 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         self.modeOfOperation_output.clear()
         self.modeOfOperation_output.insertPlainText("FILTER MODE")
         self.modeOfOperation_output.setDisabled(True)
+        
+        self.textEdit_4.setDisabled(False)
+        self.textEdit_4.clear()
+        self.textEdit_4.insertPlainText(protocolName)
+        self.textEdit_4.setDisabled(True)
+
+        self.formatter.setFilter(protocolName)
         captureList = []
         fp = open(filename)
         shouldPrint = False
