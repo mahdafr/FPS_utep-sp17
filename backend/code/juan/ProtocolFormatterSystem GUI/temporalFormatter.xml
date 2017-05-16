@@ -1,0 +1,1 @@
+<rule><filter><action name="tcp.srcport" type="hide" value="d862" /><action name="tcp.srcport" type="hide" value="433" /><action annotation="perro" name="tcp.srcport" type="annotation" value="433" /><action name="tcp.srcport" type="rename" value="433" /><action name="tcp.srcport" type="hide" value="69" /></filter></rule>

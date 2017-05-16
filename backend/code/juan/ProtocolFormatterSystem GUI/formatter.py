@@ -12,12 +12,13 @@ class Formatter:
 		Formatter.filterElement = xml.Element("filter")
 		Formatter.root.append(Formatter.filterElement)
 		
-	def appendAnnotation(self,name,value):
+	def appendAnnotation(self,name,value,annotation):
 		#ANNOTATION
 		actionElement = xml.SubElement(Formatter.filterElement, "action")
+		actionElement.set("type", "annotation")
 		actionElement.set("name",name)
 		actionElement.set("value",value)
-		actionElement.set("type", "annotation")
+		actionElement.set("annotation",annotation)
 		
 	def appendHide(self,name,value):
 		#HIDE
@@ -25,7 +26,6 @@ class Formatter:
 		actionElement.set("type", "hide")
 		actionElement.set("name",name)
 		actionElement.set("value",value)
-		print("hide")
 		
 	def appendHook(self,path,name,value):
 		#HOOK
@@ -45,10 +45,5 @@ class Formatter:
 	def createFormatter(self):
 		tree = xml.ElementTree(Formatter.root)
 		#tree.write('./formatter/%r.xml' % formatterName)
-		tree.write('formatterTest.xml')
-
-#CREATE	A FORMATTER fILE AND APPEND HIDE	
-#formatter = Formatter()
-#formatter.appendHide('ksks','lll')
-#formatter.createFormatter()
+		tree.write('temporalFormatter.xml')
 

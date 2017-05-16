@@ -21,7 +21,7 @@ import main_window_gui
 import xml.etree.ElementTree as ET
 
 class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
-    
+
     ### OPEN Controllers
     #ACTION OPNE TRIGGERED
     def triggeredOpenButton(self):
@@ -165,15 +165,36 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     #@Requires a file with file extension .pdml
     #@Ensures a list of non repited protoc3ols
     def FilterProtocol(self,filename,protocolName):
-        xml = ET.parse(filename)
-        root = xml.getroot()
-        for elem in root:
-            proto = elem.find('proto')
-            protoJson = proto.attrib
-            print(protoJson)
-            if (proto.find('name') == protocolName):
-                root.remove(elem)
-        xml.write('output.xml')
+        self.modeOfOperation_output.setDisabled(False)
+        self.modeOfOperation_output.clear()
+        self.modeOfOperation_output.insertPlainText("FILTER MODE")
+        self.modeOfOperation_output.setDisabled(True)
+        captureList = []
+        fp = open(filename)
+        shouldPrint = False
+        #target = open(filename, 'w')
+        target = open("testing.pdml", 'w')
+        for line in fp:
+            protoStarts = '<proto name="' + protocolName
+            if protoStarts in line:
+                shouldPrint = True
+                target.write(line)
+            elif "</proto>"in line and shouldPrint == True:
+                target.write(line)
+                shouldPrint = False
+            elif shouldPrint == True or "<packet" in line or "<pdml" in line or "</packet" in line or "</pdml"in line or "<?xml" in line:
+                target.write(line)
+            else:
+                shouldPrint = False
+        i = 0
+        f = open("testing.pdml",'r') 
+        with f:
+            for line in f:
+                self.captureWindow_list.insertItem(i, line)
+                captureList.append(line)
+                self.Historical_CaptureText.insertPlainText(line)
+                i += 1
+        fp.close()
                                 
     #Action SAVE trigger
     def triggeredSaveButton(self):
@@ -246,26 +267,58 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
     #Action HISTORICAL COPY trigger
     def doubleClickedCaptureItem(self):
         fieldTextLine = self.captureWindow_list.currentItem().text()
-        soup = BeautifulSoup(fieldTextLine, "lxml")    
-        field = soup.field
-        print (field['name'])
-        print (field['value'])
-        self.Edit_Window_FiledList.insertItem(0, field['name'])
-        self.Edit_Window_filedValue.insertPlainText(field['value'])
-        #self.modeOfOperation_output.insertPlainText("EDIT MODE")
-        formatter = Formatter()
-        formatter.appendHide(field['name'],field['value'])
-        formatter.createFormatter()
+        soup = BeautifulSoup(fieldTextLine, "lxml") 
+        soupstring = str(soup)
+        if "value=" in soupstring:
+            field = soup.field
+            print (field['name'])
+            print (field['value'])
+            self.Edit_Window_FiledList.insertItem(0, field['name'])
+            self.Edit_Window_filedValue.insertPlainText(field['value'])
             
+            self.formatter.appendHide(field['name'],field['value'])
+            #formatter.createFormatter()
+            
+        #Jerry's mode of operation part    
+        self.modeOfOperation_output.clear()
+        self.modeOfOperation_output.insertPlainText("EDIT MODE")
+        self.modeOfOperation_output.setDisabled(True)  
+                  
     def clickedfilterBarButton(self):
         protocolName = self.Filter_Bar_input.toPlainText()
         self.FilterProtocol("cubic.pdml",protocolName)
+    
+    def clickedEditChangeValueButton(self):
+        fieldName = self.Edit_Window_FiledList.currentItem().text()
+        fieldValue = self.Edit_Window_filedValue.toPlainText()
+        self.formatter.appendHide(fieldName,fieldValue)
+        print("change Value") 
+           
+    def clickedAnnotateButton(self):
+        fieldName = self.Edit_Window_FiledList.currentItem().text()
+        fieldValue = self.Edit_Window_filedValue.toPlainText()
+        annotateField = self.Edit_Window_filedAnnotation.toPlainText()
+        self.formatter.appendAnnotation(fieldName,fieldValue,annotateField)
+        print("annotation added") 
+    
+    def clickedHideFiledButton(self):
+        fieldName = self.Edit_Window_FiledList.currentItem().text()
+        fieldValue = self.Edit_Window_filedValue.toPlainText()
+        self.formatter.appendRename(fieldName,fieldValue)
+        print("Hide Filed") 
         
+    def clickedCreateRule(self):
+        fieldValue = self.Edit_Window_filedValue.toPlainText()
+        self.formatter.createFormatter()
+        print("CreateRule") 
         
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
         
+        #Create Rule
+        self.FormatterWindow_createRule.clicked.connect(lambda: self.clickedCreateRule())
+        #Protocol Filter
         self.Filter_Bar_Button.clicked.connect(lambda: self.clickedfilterBarButton())
         
         ### EDIT WINDOW
@@ -296,8 +349,12 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         
         ### List of Formatters
         self.captureWindow_list.itemDoubleClicked.connect(lambda: self.doubleClickedCaptureItem())
-
-
+        self.modeOfOperation_output.setDisabled(False)
+        self.modeOfOperation_output.clear()
+        self.modeOfOperation_output.insertPlainText("NO PDML")
+        self.modeOfOperation_output.setDisabled(True)
+        self.formatter = Formatter()
+        
 def main():
     # a new app instance
     app = QApplication(sys.argv)
