@@ -305,11 +305,12 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
         captureList = []
         self.modeOfOperation_output.insertPlainText("EDIT MODE")
         self.modeOfOperation_output.setDisabled(True)
+        fieldValue = self.Edit_Window_filedValue.toPlainText()
         fp = open("cubic.pdml", 'r')
         target = open("testing.pdml", 'w')
         for line in fp:
             if self.getFieldPressed in line:
-                line = line.replace(self.getValueofField, 'almostthere')
+                line = line.replace(self.getValueofField, fieldValue)
                 target.write(line)
             else:
                 target.write(line)
@@ -349,7 +350,7 @@ class MainWindow(QMainWindow, main_window_gui.Ui_MainWindow):
                 i += 1
         fp.close()
         print("annotation added") 
-    #added code here--------------------------------------------------------
+    
     def clickedHideFiledButton(self):
         self.modeOfOperation_output.setDisabled(False)
         self.modeOfOperation_output.clear()
